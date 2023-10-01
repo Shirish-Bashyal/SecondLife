@@ -1,4 +1,5 @@
-﻿using SecondLife.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using SecondLife.Data;
 using SecondLife.DTO;
 using SecondLife.Interfaces;
 using SecondLife.Models;
@@ -8,23 +9,28 @@ namespace SecondLife.Repositories
     public class UserRepository : IUser
     {
         public ApplicationDbContext _context;
+        private readonly UserManager<Authenticate> _user;
 
-
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context, UserManager<Authenticate> user)
         {
             _context = context;
+            _user = user;
         }
 
-        public async Task<UserManagerResponse> AddUserDetailsAsync(UserDetailsDTO userDetail)
+        public async Task<UserManagerResponse> AddUserDetailsAsync(UserDetailsDTO userDetail, string userid)
         {
+
+            var userDat=_user.FindByIdAsync(userid).Result;
+
             var user = new UserDetails  // creating an instance of userdetails to save to database
             {
                 Name = userDetail.Name,
                 AboutMe = userDetail.AboutMe,
                 PhoneNumber = userDetail.PhoneNumber,
                 Address = userDetail.Address,
-                Email = userDetail.Email
-
+                Email = userDat.Email,
+                UserData=userDat
+                
 
             };
             _context.tbl_user_details.Add(user);

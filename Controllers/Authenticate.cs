@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SecondLife.DTO;
 using SecondLife.Helper;
 using SIgnin_Manager.Interface;
+using System.IdentityModel.Tokens.Jwt;
+//using System.Net.Http.HttpResponseHeadersExtensions;
 
 namespace SecondLife.Controllers
 {
@@ -70,9 +73,21 @@ namespace SecondLife.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _userInterface.SignInUserAsync(model);
+              
 
 
+                //cookieOptions.Expires = DateTime.Now.AddDays(30);
+                //cookieOptions.Path = "/";
+                //Response.Cookies.Append("User", result.Message, cookieOptions);
+                //var resp = new HttpResponseMessage();
 
+                //var cookie = new CookieHeaderValue("session-id", result.Message);
+               
+                //cookie. = DateTimeOffset.Now.AddDays(30);
+               // cookie.Domain = Request.RequestUri.Host;
+                //cookie.Path = "/";
+
+                
                 return Ok(result);
             }
 
@@ -91,14 +106,24 @@ namespace SecondLife.Controllers
                 token = token.Substring("Bearer ".Length);
             }
             var user = _jwt.ValidateAndDeseerialize(token);
+            var token1 = new JwtSecurityTokenHandler();
+            var jsonToken = token1.ReadToken(user) as JwtSecurityToken;
+            var claims = jsonToken.Claims;
+            // var userId = claims.FirstOrDefault(c => c.Type == "Email")?.Value;
 
 
-            var result=_userInterface.
+            // extract the user from the cookie using email in the cookie
+            var email_from_cookie = claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+
+
+            var result = _userInterface.GetUserDetails(email_from_cookie);
+            if (result == null)
+                return BadRequest();
 
 
 
 
-            return Ok();
+            return Ok(result);
         }
 
        

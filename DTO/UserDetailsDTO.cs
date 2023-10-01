@@ -10,7 +10,7 @@
         public string PhoneNumber { get; set; }
 
 
-        public String Email { get; set; }
+        //public String Email { get; set; }
 
         //public String PicturePath { get; set; }  // to store user profile picture
 

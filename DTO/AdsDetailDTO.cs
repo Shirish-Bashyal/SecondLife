@@ -8,7 +8,15 @@
         public string AdDescription { get; set; }
 
         public string? Price { get; set; }
-        public List<byte[]> Pictures { get; set; }
+        public byte[]? ImageData1 { get; set; }
+
+        public byte[]? ImageData2 { get; set; }
+
+        public byte[]? ImageData3 { get; set; }
+
+        public byte[]? ImageData4 { get; set; }
+
+        //public List<byte[]> Pictures { get; set; }
 
 
         // public string PicturePath { get; set; }   // to save pictures uploaded by user about ads, need multiple pictures

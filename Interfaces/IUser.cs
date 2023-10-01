@@ -8,7 +8,7 @@ namespace SecondLife.Interfaces
 
         UserDetails GetUserDetails(int id);
 
-        Task<UserManagerResponse> AddUserDetailsAsync(UserDetailsDTO userDetail);
+        Task<UserManagerResponse> AddUserDetailsAsync(UserDetailsDTO userDetail, string userid);
 
 
         Task<UserManagerResponse> UpdateUserDetailsAsync(UserDetailsDTO userDetail);

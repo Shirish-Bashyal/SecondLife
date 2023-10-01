@@ -65,7 +65,7 @@ namespace SecondLife.Controllers
             }
             var user = _jwt.ValidateAndDeseerialize(token);
 
-            var result = _listing.GetAdsRandomly();
+            var result = _listing.GetAdsRandomly(user);
 
 
             return Ok(result);

@@ -54,19 +54,17 @@ namespace SecondLife.Repositories
                 Price = result.Price,
                // ImageData = result.Picture,
                 LastPrice = lastPrice,
+                ImageData1=result.Picture1,
+                ImageData2=result.Picture2,
+                ImageData3 =result.Picture3,
+                ImageData4=result.Picture4
 
                 //can also add timeleft while giving the details of the post
 
 
             };
 
-            viewResult.Pictures = new List<byte[]>();
-
-            foreach(var p in result.Pictures)
-            {
-                viewResult.Pictures.Add(p);
-            }
-     
+           
 
            
 
@@ -82,7 +80,7 @@ namespace SecondLife.Repositories
                 Id = x.Id,
                 AdTitle = x.AdTitle,
                 Price = x.Price,
-                ImageData = x.Pictures.FirstOrDefault()
+                ImageData = x.Picture1
 
             }).ToList();
 
@@ -196,7 +194,7 @@ namespace SecondLife.Repositories
                 Id = x.Id,
                 AdTitle = x.AdTitle,
                 Price = x.Price,
-                ImageData = x.Pictures.First()
+                ImageData = x.Picture1
 
             }).ToList();
 
@@ -221,11 +219,51 @@ namespace SecondLife.Repositories
 
         }
 
+        public ICollection<AdsFirstLookDTO> GetAdsRandomly(string user)
+        {
+
+            var handler = new JwtSecurityTokenHandler();
+            //trying
+            //var token = handler.ReadJwtToken(user.Replace("\0", "")); //as JwtSecurityToken;
+            var jsonToken = handler.ReadToken(user) as JwtSecurityToken;
+            var claims = jsonToken.Claims;
+            // var userId = claims.FirstOrDefault(c => c.Type == "Email")?.Value;
+
+
+            // extract the user from the cookie using email in the cookie
+            var email_from_cookie = claims.FirstOrDefault(c => c.Type == "Email")?.Value;
+
+
+            var ads = _context.tbl_ads.Where(a => a.Ad_by_user.Email != email_from_cookie).OrderBy(r => Guid.NewGuid()).Take(10).Select(x => new AdsFirstLookDTO()
+            {
+                Id = x.Id,
+                AdTitle = x.AdTitle,
+                Price = x.Price,
+                ImageData = x.Picture1
+
+            }).ToList();
+
+            var count = ads.Count();
+            if (count % 2 == 0)
+                return ads;
+
+            else
+            {
+                Random random = new Random();
+                int randomIndex = random.Next(0, count); // Generate a random index within the list bounds
+
+                ads.RemoveAt(randomIndex);
+                return ads;
+            }
+           
+        }
+
         public async Task<UserManagerResponse> PostAds(PostAdsDTO postDetails, string user)
         {
             var post = new UserAds();
+            var pictures = new List<Byte[]>();   
             //yourEntity.Pictures = new List<byte[]>();
-            post.Pictures=new List<byte[]>();
+          //  post.Pictures=new List<AdPicture>();
             var postCategory = _context.tbl_category.Where(a => a.CategoryName == postDetails.category).FirstOrDefault();
             var PostLocation = _context.tbl_location.Where(a => a.City == postDetails.location.City).FirstOrDefault();
 
@@ -242,8 +280,15 @@ namespace SecondLife.Repositories
                         imageData = memoryStream.ToArray();
                        
                     }
-                    post.Pictures.Add(imageData);
+                  pictures.Add(imageData);
+
+                    
                 }
+
+                post.Picture1=pictures[0];
+                post.Picture2=pictures[1];
+                post.Picture3 = pictures[2];
+                post.Picture4 = pictures[3];
 
 
 

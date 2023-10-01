@@ -16,6 +16,8 @@ namespace SecondLife.Interfaces
         ICollection<AdsFirstLookDTO> GetAdsByCategory(string category);
 
         Task<UserManagerResponse> PostAds(PostAdsDTO postDetails, string user);
+        ICollection<AdsFirstLookDTO> GetAdsRandomly(string user);
+
 
 
         //ICollection<AdsFirstLookDTO> GetAdsRandomly(string user);

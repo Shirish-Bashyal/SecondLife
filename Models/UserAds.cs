@@ -1,9 +1,13 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SecondLife.Models
 {
     public class UserAds
     {
+
+          [Key]
         public int Id { get; set; }
         public string AdTitle { get; set; }
 
@@ -11,8 +15,12 @@ namespace SecondLife.Models
 
         public string? Price { get; set; }
         public string AdAddress { get; set; }
-       // public byte[]? Picture { get; set; }
-        public List<byte[]> Pictures { get; set; }
+        public byte[]? Picture1 { get; set; }
+        public byte[]? Picture2 { get; set; }
+        public byte[]? Picture3 { get; set; }
+        public byte[]? Picture4 { get; set; }
+
+        // public List<byte[]> Pictures { get; set; }
 
 
 
@@ -31,5 +39,16 @@ namespace SecondLife.Models
 
 
 
+    }
+
+    public class AdPicture
+    {
+        [Key]
+        public int Id { get; set; }
+        public byte[] PictureData { get; set; }
+
+        // Foreign key to relate to the UserAds entity
+        public int UserAdsId { get; set; }
+        public UserAds UserAds { get; set; }
     }
 }

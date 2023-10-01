@@ -23,6 +23,17 @@ namespace SecondLife.Data
         public DbSet<SecondLife.Models.UserDetails> tbl_user_details { get; set; }
 
         public DbSet<SecondLife.Models.Order> tbl_order { get; set; }
+       // public DbSet<AdPicture> AdPictures { get; set; }
+
+        public DbSet<Favourite> tbl_favourites { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<UserAds>()
+        //        .HasMany(u => u.Pictures)
+        //        .WithOne(p => p.UserAds)
+        //        .HasForeignKey(p => p.UserAdsId);
+        //}
 
 
 

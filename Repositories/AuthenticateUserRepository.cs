@@ -38,9 +38,13 @@ namespace SecondLife.Repositories
 
         public UserDetailsDTO GetUserDetails(string UserId)
         {
+            //token handler
+
+
+
             var user = _context.tbl_user_details.Where(a => a.UserData.Id == UserId).Select(a => new UserDetailsDTO()
             {
-                Email = a.Email,
+               // Email = a.Email,
 
                 PhoneNumber = a.PhoneNumber,
                 Address = a.Address,
@@ -83,7 +87,7 @@ namespace SecondLife.Repositories
             };
             
                 var result = await _user.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (result.Succeeded)  //remove this to add detils for users from anothe page
                 {
                     var userDetails = new UserDetails();
                     var userData = await _user.FindByEmailAsync(model.Email);
@@ -180,6 +184,21 @@ namespace SecondLife.Repositories
             string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
 
+            
+             var userddetails=_context.tbl_user_details.Where(a=>a.UserData.Id==user.Id).FirstOrDefault ();
+            if (userddetails == null)
+                return new UserManagerResponse
+                {
+                    Message="Add Details"
+
+                };
+                
+
+             
+             
+             
+
+
           
             
 
@@ -191,6 +210,8 @@ namespace SecondLife.Repositories
                 ExpireDate = token.ValidTo
 
             };
+
+
 
 
 

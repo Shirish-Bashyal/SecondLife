@@ -12,7 +12,7 @@ namespace SecondLife.Models
 
         public string PhoneNumber { get; set; }= String.Empty;
 
-        public String AboutMe { get; set; } = String.Empty;
+        public String? AboutMe { get; set; } = String.Empty;
 
         public String Address { get; set; } = String.Empty;
 

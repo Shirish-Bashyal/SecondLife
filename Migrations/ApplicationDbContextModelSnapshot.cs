@@ -245,6 +245,29 @@ namespace SecondLife.Migrations
                     b.ToTable("tbl_category");
                 });
 
+            modelBuilder.Entity("SecondLife.Models.Favourite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdToFavId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserDetailsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdToFavId");
+
+                    b.HasIndex("UserDetailsId");
+
+                    b.ToTable("tbl_favourites");
+                });
+
             modelBuilder.Entity("SecondLife.Models.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -327,7 +350,16 @@ namespace SecondLife.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("Picture")
+                    b.Property<byte[]>("Picture1")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("Picture2")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("Picture3")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("Picture4")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Price")
@@ -439,6 +471,25 @@ namespace SecondLife.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SecondLife.Models.Favourite", b =>
+                {
+                    b.HasOne("SecondLife.Models.UserAds", "AdToFav")
+                        .WithMany()
+                        .HasForeignKey("AdToFavId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SecondLife.Models.UserDetails", "UserDetails")
+                        .WithMany()
+                        .HasForeignKey("UserDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdToFav");
+
+                    b.Navigation("UserDetails");
                 });
 
             modelBuilder.Entity("SecondLife.Models.Order", b =>
